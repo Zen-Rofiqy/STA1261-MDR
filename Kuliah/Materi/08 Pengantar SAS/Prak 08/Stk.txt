@@ -1,0 +1,6 @@
+G1 006 Angga Fathan Rofiqy    90 92
+G1 016 Aida Darajati          81 86
+G1 009 Muhammad Rizky Fajar   87 75
+G1 015 Farik Steadi           75 89
+G1 044 Rafli Raditiya         89 79
+G1 018 Muhammad Farras        78 70

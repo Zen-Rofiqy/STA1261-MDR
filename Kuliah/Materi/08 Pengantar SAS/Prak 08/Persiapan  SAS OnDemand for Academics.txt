@@ -1,0 +1,9 @@
+Persiapan : SAS OnDemand for Academics
+Ikuti Langkah-langkah berikut ini : 
+
+1. Buka Halaman ini : https://welcome.oda.sas.com/login
+2. Ikuti Petunjuk dari Video berikut ini : https://support.sas.com/en/software/ondemand-for-academics-support.html#students , untuk melakukan pendaftaran
+3. Gunakan e-mail apps IPB
+4. Ketika sudah berhasil bergabung, pilih tab Enrollments,
+5. Pilih opsi + enroll in a course, masukkan Course Code berikut ini : 4c171dbf-1c3b-498e-9966-4d33b493309a
+6. Untuk Sofware SAS yang digunakan, adalah SAS Studio
