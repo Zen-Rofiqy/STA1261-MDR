@@ -1,0 +1,150 @@
+DROP TABLE IF EXISTS EMPLOYEE;
+
+CREATE TABLE EMPLOYEE(
+Fname		VARCHAR(15)		NOT NULL,
+Minit		CHAR,
+Lname 		VARCHAR(15)		NOT NULL,
+Ssn			CHAR(9),
+Bdate		DATE,
+Adress		VARCHAR(30),
+Sex			CHAR,
+Salary		DECIMAL(10,2),
+Super_ssn	CHAR(9),
+Dno			INT				NOT NULL);
+
+INSERT INTO EMPLOYEE (Fname, Minit, Lname,Ssn, Bdate, Dno)
+VALUES	('John', 'B', 'Smith', 123456789, '1965-01-09',4);
+
+INSERT INTO EMPLOYEE
+VALUES	('John', 'B', 'Smith', 123456789, '1965-01-09', '731 Fondren, Houston TX', 'M', 30000, 333445555, 5),
+		('Franklin', 'T', 'Wong', 333445555,' 1965-12-08', '638 Voss, Houston TX', 'M', 40000, 888665555, 5),
+		('Alicia', 'J','Zelaya', 999887777,'1968-01-19', '3321 Castle, Spring TX', 'F', 25000, 987654321, 4);
+
+INSERT INTO EMPLOYEE 
+VALUES ('James', 'E', 'Borg', 888665555, '1987-11-10', '450 Stone, Houston TX', 'M', 55000, 333445555, 3);
+
+ALTER TABLE EMPLOYEE
+MODIFY	Ssn Ssn VARCHAR(9)	NOT NULL;
+
+
+DROP TABLE IF EXISTS Project;
+		
+CREATE TABLE Project(
+Pname		VARCHAR(15)		NOT NULL	UNIQUE,
+Pnumber		INT				NOT NULL,
+Plocation	VARCHAR(15),
+Dnum		INT				NOT NULL);
+
+INSERT INTO Project
+VALUES	('ProductX', 1, 'Bellaire', 5),
+		('ProductX', 2,'Sugarland', 5), 
+		('ProductZ', NULL,'Houston', 4);
+
+INSERT INTO Project
+VALUES	('ProductX', 1, 'Bellaire', 5),
+		('ProductY', 2,'Sugarland', 5), 
+		('ProductZ', 3,'Houston', 4);
+
+		
+DROP TABLE IF EXISTS DEPENDENT;
+
+CREATE TABLE DEPENDENT(
+Essn			CHAR(9)			NOT NULL	UNIQUE,
+Dependent_name	VARCHAR(15)		NOT NULL,
+Sex				CHAR,
+Bdate			DATE,
+Relationship	VARCHAR(10)		DEFAULT 'Employee');
+
+INSERT INTO DEPENDENT
+VALUES	(333445555,'Alice', 'F', '1986-04-04', 'daughter'),
+		(987654321,'Theodore', 'M', '1983-10-25','Son');
+		
+INSERT INTO DEPENDENT
+VALUES	(231234567,'Ali','M', '1978-2-13', NULL);
+		
+INSERT INTO DEPENDENT (Essn, Dependent_name,Sex, Bdate)
+VALUES (231234567,'Ali','M', '1978-2-13');
+
+
+DROP TABLE IF EXISTS DEPENDENT;
+
+CREATE TABLE DEPENDENT(
+Essn			CHAR(9)			NOT NULL	UNIQUE,
+Dependent_name	VARCHAR(15)		NOT NULL,
+Sex				CHAR,
+Bdate			DATE,
+Relationship	VARCHAR(10)		NOT NULL	ON CONFLICT replace DEFAULT 'Employee');
+
+INSERT INTO DEPENDENT
+VALUES (123456789,'Alice','F', '1988-12-30',NULL);
+
+DROP TABLE IF EXISTS Department;
+
+CREATE TABLE Department(
+Dname			VARCHAR(15)		NOT NULL,
+Dnumber			INT				NOT NULL	UNIQUE,
+Mgr_ssn			CHAR(9)			CHECK (Mgr_ssn != 123456789),
+Mgr_name		VARCHAR(15)		DEFAULT 'Alex');
+
+INSERT INTO Department
+VALUES	('Research', 5, 33344555, 'Josh'),
+		('Administration', 4, 987654321, 'Alicia'),
+		('Headquarters', 1, 123456789, 'Theodore');
+
+INSERT INTO Department
+VALUES	('Research', 5, 33344555, 'Josh'),
+		('Administration', 4, 987654321, 'Alicia'),
+		('Headquarters', 1, 336655999, 'Theodore');
+INSERT INTO Department (Dname, Dnumber, Mgr_ssn)
+VALUES ('Marketing', 2, 223344555); 
+		
+
+DROP TABLE IF EXISTS Works_On;		
+
+CREATE TABLE Works_On(
+Essn			CHAR(9)			PRIMARY KEY,
+Pno				INT				NOT NULL	UNIQUE,
+Hours			DECIMAL(3,1)	CHECK (Hours >1 AND Hours <50.5));
+
+INSERT INTO Works_On
+VALUES	(123456789, 1, 32.5),
+		(666884444, 3, 40.0),
+		(333445555, 20, 10.0),
+		(987654321, 3, 35.0),
+		(NULL, 10, 45.5);
+		
+INSERT INTO Works_On
+VALUES	(123456789, 1, 32.5),
+		(666884444, 3, 40.0),
+		(333445555, 20, 10.0),
+		(111224444, 3, 35.0),
+		(987654321, 10, 55.5);
+		
+INSERT INTO Works_On
+VALUES	(123456789, 1, 32.5),
+		(666884444, 3, 40.0),
+		(333445555, 20, 10.0),
+		(987654321, 6, 35.0),
+		(999887777, 10, 45.5);
+
+
+DROP TABLE if EXISTS Dept_Locations;
+		
+CREATE TABLE Dept_Locations(
+Id_Location		INT				NOT NULL	PRIMARY KEY,
+Dnumber			INT				NOT NULL,
+Dlocation		VARCHAR(50)		NOT NULL,
+Nomor			CHAR(9)			NOT NULL,
+FOREIGN KEY (Nomor) REFERENCES Works_On(Essn));
+
+INSERT INTO Dept_Locations
+VALUES	(34, 1, '731 Fondren, Houston TX', 123456789),
+		(12, 1, '450 Stone, Houston TX', 123456789),
+		(2, 5, '3321 Castle, Spring TX', 333445555),
+		(28, 4, '638 Voss, Houston TX', 557773344);
+
+INSERT INTO Dept_Locations
+VALUES	(34, 1, '731 Fondren, Houston TX', 123456789),
+		(12, 1, '450 Stone, Houston TX', 123456789),
+		(2, 5, '3321 Castle, Spring TX', 333445555),
+		(28, 4, '638 Voss, Houston TX', 987654321);
