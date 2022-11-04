@@ -1,0 +1,72 @@
+DROP TABLE IF EXISTS CUSTOMER;
+CREATE TABLE CUSTOMER(
+Customer_ID      CHAR             NOT NULL       UNIQUE   PRIMARY KEY,
+fname    		 CHAR             NOT NULL,
+lname     		 CHAR             NOT NULL,
+address			 CHAR             NOT NULL,
+contact_add		 CHAR             NOT NULL,
+username		 CHAR             NOT NULL,
+pass			 CHAR             NOT NULL		CHECK(pass>=5)
+
+);
+
+INSERT INTO CUSTOMER
+VALUES     ('A001' , 'Farik'   , 'Steadi'  , 'Perwira' , 'farik@gmail.com'   , 'parik_' , 'parik123'),
+           ('A002' , 'Fajar'   , 'Rizky'   , 'Perdesi' , 'fajar@gmail.com'   , 'pajar_' , 'pajar123'),
+           ('A003' , 'Fathan'  , 'Rofiqy'  , 'Perwira' , 'fathan@gmail.com'  , 'patan_' , 'patan123'),
+           ('A004' , 'Fazrin'  , 'Much'    , 'Perdesi' , 'much12@gmail.com'  , 'muchh_' , 'mcuh123'),
+           ('A005' , 'Fajrin'  , 'Uhuy'    , 'Perwira' , 'fajrin@gmail.com'  , 'pajrin' , 'pajrin123'),
+		   ('B001' , 'Fahlan'  , 'Hulk'    , 'Perdesi' , 'fahlan@gmail.com'  , 'hulk__' , 'hulk123'),
+		   ('B002' , 'Fubuki'  , 'Fubuka'  , 'Perwira' , 'fubuki@gmail.com'  , 'fubuk_' , 'fubuki123'),
+		   ('B003' , 'Fransis' , 'ko'      , 'Perdesi' , 'fransis@gmail.com' , 'kokoko' , 'kokoko123'),
+		   ('B004' , 'Farras'  , 'Tach'    , 'Perwira' , 'faras@gmail.com'   , 'fartac' , 'paras123'),
+		   ('B005' , 'Farhan'  , 'Bambang' , 'Perdewi' , 'farhan@gmail.com'  , 'parhan' , 'parhan123');
+
+		   
+DROP TABLE IF EXISTS Employees;
+CREATE TABLE Employees(
+Employee_ID      CHAR             NOT NULL       UNIQUE   PRIMARY KEY,
+fname    		 CHAR             NOT NULL,
+lname     		 CHAR             NOT NULL,
+address			 CHAR             NOT NULL,
+contact_add		 CHAR             NOT NULL,
+username		 CHAR             NOT NULL,
+pass			 CHAR             NOT NULL		CHECK(pass>=5)
+
+);
+
+INSERT INTO Employees
+VALUES   ('X001' , 'Burhan'    , 'mumun'   , 'Perwira' , 'burhan@gmail.com'  , 'fartac'   , 'paras123'),
+		 ('X002' , 'Parhan'    , 'maman'   , 'Perdewi' , 'farhan@gmail.com'  , 'parhan'   , 'parhan123'),
+		 ('X003' , 'Bubuahan'  , 'mimin'   , 'Perdesi' , 'buah@gmail.com'    , 'bubuahan' , 'buah123');
+		
+		
+DROP TABLE IF EXISTS Transactions;
+CREATE TABLE Transactions(
+trans_ID         CHAR             NOT NULL       UNIQUE   PRIMARY KEY,
+Employee_ID      CHAR             NOT NULL,
+Customer_ID      CHAR             NOT NULL,
+name			 CHAR             NOT NULL,
+
+FOREIGN KEY(Employee_ID) REFERENCES Employees(Employee_ID)
+FOREIGN KEY(Customer_ID) REFERENCES CUSTOMER (Customer_ID)
+
+);
+
+INSERT INTO Transactions
+VALUES      ('T001' , 'X001' , 'A005' , 'Fajrin'),
+            ('T002' , 'X001' , 'A005' , 'Fajrin'),
+			('T003' , 'X001' , 'A003' , 'Fathan'),
+			('T004' , 'X003' , 'B002' , 'Fubuki'),
+			('T005' , 'X003' , 'A004' , 'Fazrin'),
+			('T006' , 'X003' , 'A001' , 'Farik'),
+			('T007' , 'X001' , 'B004' , 'Farras'),
+			('T008' , 'X002' , 'A005' , 'Fajrin'),
+			('T009' , 'X001' , 'B005' , 'Farhan'),
+			('T010' , 'X002' , 'B003' , 'Fransis'),
+			('T011' , 'X003' , 'A005' , 'Fajrin'),
+			('T012' , 'X003' , 'B002' , 'Fubuki'),
+			('T013' , 'X002' , 'A005' , 'Fajrin'),
+			('T014' , 'X002' , 'B005' , 'Farhan'),
+			('T015' , 'X002' , 'B003' , 'Fransis');
+			
