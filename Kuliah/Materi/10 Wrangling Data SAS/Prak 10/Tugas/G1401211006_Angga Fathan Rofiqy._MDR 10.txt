@@ -1,0 +1,54 @@
+/*
+[TUGAS PRAKTIKUM MANAJEMEN DATA RELASIONAL PEKAN 10]
+====================================================
+NAMA  : Angga Fathan Rofiqy
+NIM   : G1401211006
+Kelas : Pararel 01
+
+[No.1]__________________________________________________________________________________________
+|Urutkan dataset sample berdasarkan usia siswa dengan urutan siswa yang lebih tua berada di atas|
+--------------------------------------------------------------------------------------------- */
+DATA student;
+INFILE '~/MDR Praktikum/MDR_10/data_sample1.txt';
+INPUT ids bday Rank Major$ Gender Athlete Weight Height English Reading Math Writing State$ SleepTime StudyTime;
+INFORMAT bday MMDDYY10.;
+FORMAT bday YYMMDD10.;
+
+PROC SORT DATA=student OUT=bday_oldest;
+BY  bday;
+RUN;
+
+/*
+[No.2]_______________________________________________________________________________________
+|Buatlah peubah baru bernama bahasa yang merupakan hasil rata–rata nilai bahasa Inggris,     |
+|Reading dan Writing, dan peubah keterangan yang bernilai lulus jika nilai matematika        |
+|lebih dari sama dengan 70 dan nilai bahasa lebih dari sama dengan 75, selain itu keterangan | 
+|tidak lulus. Simpan data dengan peubah baru tersebut ke dalam data baru bernama Latihan     |
+|dengan menghilangkan peubah nilai bahasa Inggris, Reading dan Writing.                      |
+------------------------------------------------------------------------------------------ */
+DATA Bahasa;
+SET student(KEEP = ids English Reading Writing Math);
+bahasa = (English+Reading+Writing)/3;
+LENGTH Keterangan$11;
+IF (Math>=70 AND bahasa >= 75) THEN Keterangan='Lulus';
+ELSE Keterangan='Tidak Lulus';
+
+DATA Latihan;
+SET Bahasa(DROP = English Reading Writing);
+PROC PRINT DATA=Latihan;
+RUN;
+
+/*
+[No.3]____________________________________________________________________________
+|Selanjutnya pisahkan data siswa yang lulus dan tidak lulus berdasarkan keterangan|
+--------------------------------------------------------------------------------*/
+DATA LULUS TIDAK;
+SET Latihan;
+IF (Keterangan = 'Lulus') THEN OUTPUT LULUS;
+IF (Keterangan = 'Tidak Lulus') THEN OUTPUT TIDAK;
+PROC PRINT DATA=LULUS;
+TITLE 'Daftar Siswa Lulus';
+PROC PRINT DATA=TIDAK;
+TITLE 'Daftar Siswa Tidak Lulus';
+RUN;
+ 
