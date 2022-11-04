@@ -10,10 +10,10 @@ Kelas : Pararel 01
 --------------------------------------------------------------------------------------------- */
 DATA student;
 INFILE '~/MDR Praktikum/MDR_10/data_sample1.txt';
+LENGTH ids 8 bday 8 Rank 8 Major$20;
 INPUT ids bday Rank Major$ Gender Athlete Weight Height English Reading Math Writing State$ SleepTime StudyTime;
 INFORMAT bday MMDDYY10.;
 FORMAT bday YYMMDD10.;
-
 PROC SORT DATA=student OUT=bday_oldest;
 BY  bday;
 RUN;
@@ -26,16 +26,13 @@ RUN;
 |tidak lulus. Simpan data dengan peubah baru tersebut ke dalam data baru bernama Latihan     |
 |dengan menghilangkan peubah nilai bahasa Inggris, Reading dan Writing.                      |
 ------------------------------------------------------------------------------------------ */
-DATA Bahasa;
-SET student(KEEP = ids English Reading Writing Math);
-bahasa = (English+Reading+Writing)/3;
+DATA latihan (DROP=English Reading Writing);
+SET bday_oldest;
+Bahasa=(English+Reading+Writing)/3;
 LENGTH Keterangan$11;
-IF (Math>=70 AND bahasa >= 75) THEN Keterangan='Lulus';
+IF (Math >= 70 AND Bahasa >= 75) THEN Keterangan='Lulus';
 ELSE Keterangan='Tidak Lulus';
-
-DATA Latihan;
-SET Bahasa(DROP = English Reading Writing);
-PROC PRINT DATA=Latihan;
+PROC PRINT DATA=latihan;
 RUN;
 
 /*
