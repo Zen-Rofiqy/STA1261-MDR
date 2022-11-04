@@ -1,0 +1,59 @@
+ Mengambil seluruh kolom di tabel EMPLOYEE;
+SELECT  FROM EMPLOYEE;
+
+ Mengambil seluruh kolom di tabel EMPLOYEE dengan Salary  30000;
+SELECT  FROM EMPLOYEE WHERE SALARY  30000;
+
+ Mengambil 5 baris teratas dari kolom Fname dan Lname dari tabel EMPLOYEE;
+SELECT Fname, Lname FROM EMPLOYEE LIMIT 5;
+
+ Mengambil seluruh kolom di tabel EMPLOYEE dengan Salary  30000 dan SEX = 'M';
+SELECT  FROM EMPLOYEE WHERE SALARY  30000 AND SEX = 'M';
+SELECT  FROM EMPLOYEE WHERE MINIT = 'T';
+
+ Mengambil kolom Fname, lname, salary, dari tabel EMPLOYEE dengan Salary  30000 dan SEX = 'M' diurutkan berdasarkan Salary yang terbesar - terkecil;
+SELECT FNAME, LNAME, SALARY FROM EMPLOYEE WHERE SALARY  30000 AND SEX = 'M' ORDER BY SALARY DESC;
+SELECT FNAME, LNAME, SALARY FROM EMPLOYEE WHERE SALARY  30000 AND SEX = 'M' ORDER BY 3 DESC;
+
+ Menghitung jumlah baris di tabel EMPLOYEE;
+SELECT COUNT() FROM EMPLOYEE;
+SELECT COUNT() AS 'Jumlah Baris' FROM EMPLOYEE;
+
+ Menghitung jumlah kolom Salary dari tabel EMPLOYEE;
+SELECT SUM(SALARY) FROM EMPLOYEE;
+
+ Mengambil fname, lname, dan salary dari baris dengan salary tertinggi dari tabel EMPLOYEE ; 
+SELECT FNAME, LNAME, MAX(SALARY) FROM EMPLOYEE;
+  
+ Menghitung Gaji rata-rata dari masing-masing Jenis Kelamin; 
+SELECT SEX, AVG(SALARY) FROM EMPLOYEE GROUP BY SEX;
+
+ Mengambil data pegawai dengan nama diawali huruf j;
+SELECT  FROM EMPLOYEE WHERE Fname LIKE 'J%';
+ Mengambil data pegawai dengan yang bertempat tinggal di Houston;
+SELECT  FROM EMPLOYEE WHERE Address LIKE '%Houston%';
+SELECT  FROM EMPLOYEE WHERE Ssn LIKE '___88%';
+SELECT  FROM EMPLOYEE WHERE Ssn LIKE '%55__';
+
+ Mengambil nama employee dan nama departemen yang bersangkutan;
+SELECT Fname, Minit, Lname, Dname FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber;
+SELECT Fname, Minit, Lname, Dname FROM EMPLOYEE AS E, DEPARTMENT AS D WHERE E.Dno = D.Dnumber;
+SELECT Fname AS 'First Name', Minit AS 'Middle Initial', Lname AS 'Last Name', Dname AS 'Department' FROM EMPLOYEE AS E, DEPARTMENT AS D WHERE E.Dno = D.Dnumber;
+
+ Mengambil nama depan, departemen, gaji, dari manajer;
+SELECT Fname, Dname, Salary FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber AND EMPLOYEE.Ssn IN (333445555, 987654321, 888665555);
+SELECT Fname, Dname, Salary FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber AND Ssn IN (SELECT Mgr_ssn FROM DEPARTMENT);
+
+ Mengambil departemen, rata-rata gaji;
+SELECT Dname, AVG(Salary) FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber GROUP BY Dno;
+SELECT Dname, AVG(Salary) FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber GROUP BY Dno ORDER BY Dname;
+SELECT Dname, AVG(Salary) FROM EMPLOYEE, DEPARTMENT WHERE EMPLOYEE.Dno = DEPARTMENT.Dnumber GROUP BY Dno HAVING AVG(Salary)  50000;
+
+ Hitung rata-rata jam kerja berdasarkan projeknya;
+SELECT Pname, avg(Hours) FROM WORKS_ON, PROJECT WHERE WORKS_ON.Pno = PROJECT.Pnumber GROUP BY Pno;
+
+ Hitung jumlah jam kerja untuk setiap pegawai;
+SELECT Fname,Minit,Lname,SUM(Hours) FROM EMPLOYEE,WORKS_ON WHERE WORKS_ON.Essn = EMPLOYEE.Ssn Group BY Ssn;
+
+ Mengambil nama-nama pegawai yang bekerja pada projek ProductX, ProductY, ProductZ;
+SELECT Fname,Minit,Lname,Pname FROM EMPLOYEE, PROJECT WHERE EMPLOYEE.Dno = PROJECT.Dnum AND PROJECT.Dnum IN (5) ORDER BY Pname;
