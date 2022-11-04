@@ -1,0 +1,154 @@
+DROP TABLE if EXISTS DEPENDENT;
+DROP TABLE IF EXISTS Project;
+DROP TABLE IF EXISTS Works_On;
+DROP TABLE IF EXISTS Dept_Locations;
+DROP TABLE IF EXISTS EMPLOYEE;
+DROP TABLE if EXISTS Department;
+
+
+CREATE TABLE DEPARTMENT(
+Dname 			VARCHAR(15) NOT NULL		UNIQUE,
+Dnumber 		INT 		PRIMARY KEY,
+Mgr_ssn 		CHAR(9) 	NOT NULL		CHECK (Mgr_ssn != 123456789),
+Mgr_start_date 	DATE);
+
+CREATE TABLE EMPLOYEE( 
+Fname 		VARCHAR(10) NOT NULL,
+Minit 		CHAR,
+Lname 		VARCHAR(20) NOT NULL,
+Ssn 		CHAR(9) 	PRIMARY KEY,
+Bdate 		DATE,
+Address		VARCHAR(30),
+Sex 		CHAR(1),
+Salary 		DECIMAL(5),
+Super_ssn 	CHAR(9),
+Dno 		INT 		NOT NULL,
+FOREIGN KEY (Dno) 		REFERENCES Department (Dnumber));
+
+CREATE TABLE DEPT_LOCATIONS
+(Dnumber 		INT 		NOT NULL,
+Dlocation 		VARCHAR(15) NOT NULL,
+PRIMARY KEY 	(Dnumber, Dlocation),
+FOREIGN KEY 	(Dnumber) 	REFERENCES DEPARTMENT(Dnumber));
+
+CREATE TABLE PROJECT(
+Pname 		VARCHAR(15) NOT NULL,
+Pnumber 	INT 		NOT NULL,
+Plocation 	VARCHAR(15),
+Dnum 		INT 		NOT NULL,
+PRIMARY KEY (Pnumber),
+UNIQUE (Pname),
+FOREIGN KEY (Dnum) REFERENCES DEPARTMENT(Dnumber));
+
+CREATE TABLE WORKS_ON(
+Essn 	CHAR(9) 		NOT NULL,
+Pno 	INT 			NOT NULL,
+Hours 	DECIMAL(3,1) 	NOT NULL,
+PRIMARY KEY (Essn, Pno),
+FOREIGN KEY (Essn) REFERENCES EMPLOYEE(Ssn),
+FOREIGN KEY (Pno) REFERENCES PROJECT(Pnumber));
+
+CREATE TABLE DEPENDENT(
+Essn 			CHAR(9) 	NOT NULL,
+Dependent_name 	VARCHAR(15) NOT NULL,
+Sex 			CHAR,
+Bdate 			DATE,
+Relationship 	VARCHAR(8)	DEFAULT 'Family',
+PRIMARY KEY (Essn, Dependent_name),
+FOREIGN KEY (Essn) REFERENCES EMPLOYEE(Ssn) );
+
+
+INSERT INTO DEPARTMENT
+VALUES ('Research',5,333445555,'1988-05-22'),
+('Administration',4,987654321,'1995-01-01'),
+('Headquarters',1,888665555,'1981-06-19');
+
+INSERT INTO EMPLOYEE
+VALUES ('John','B','Smith',123456789,'1965-01-09','731 Fondren, Houston TX','M',30000,333445555,5);
+
+INSERT INTO EMPLOYEE
+VALUES ('Franklin','T','Wong',333445555,NULL,NULL,'M',40000,888665555,5),
+('Alicia','J','Zelaya',999887777,'1968-01-19','3321 Castle, Spring TX','F',25000,987654321,4);
+
+INSERT INTO EMPLOYEE (Fname, Minit, Lname,Ssn, Bdate, Dno, Salary, Address, Super_ssn, Sex)
+VALUES ('Jennifer','S','Wallace',987654321,'1941-06-20',4,4300,'291 Berry, Bellaire TX',888665555,'F'),
+('Ramesh','K','Narayan',666884444,'1962-09-15',5,38000,'975 Fire Oak, Humble TX',333445555,'M');
+
+INSERT INTO EMPLOYEE (Fname, Minit, Lname,Ssn, Dno)
+VALUES	('Joyce','A','English',453453453,5),
+		('Ahmad','V','Jabbar',987987987,4);	
+
+INSERT INTO EMPLOYEE (Fname, Lname,Ssn, Dno, Salary, Minit, Bdate)
+VALUES ('James','Borg',888665555,1,55000,'E','1937-11-10');	
+
+INSERT INTO PROJECT
+VALUES ('ProductX',1,'Bellaire',5),
+('ProductY',2,'Sugarland',5),
+('ProductZ',3,'Houston',5),
+('Computerization',10,'Stafford',4),
+('Reorganization',20,'Houston',1),
+('Newbenefits',30,'Stafford',4);
+
+INSERT INTO WORKS_ON
+VALUES (123456789,1,32.5),
+(123456789,2,7.5),
+(666884444,3,40.0),
+(453453453,1,20.0),
+(453453453,2,20.0),
+(333445555,2,10.0),
+(333445555,3,10.0),
+(333445555,10,10.0),
+(333445555,20,10.0),
+(999887777,30,30.0),
+(999887777,10,10.0),
+(987987987,10,35.0),
+(987987987,30,5.0),
+(987654321,30,20.0),
+(987654321,20,15.0),
+(888665555,20,16.0);
+
+INSERT INTO DEPENDENT
+VALUES (333445555,'Alice','F','1986-04-04','Daughter'),
+(333445555,'Theodore','M','1983-10-25','Son'),
+(333445555,'Joy','F','1958-05-03','Spouse');
+INSERT INTO DEPENDENT
+VALUES	(987654321,'Abner','M',?,'Spouse'),
+		(123456789,'Michael','M','1988-01-04','Son');
+INSERT INTO DEPENDENT (Essn, Dependent_name, Sex, Bdate)
+VALUES	(123456789,'Alice','F','1988-12-30'),
+		(123456789,'Elizabeth','F',NULL);
+
+INSERT INTO DEPT_LOCATIONS
+VALUES (1,'Houston'),
+(4,'Stafford'),
+(5,'Bellaire'),
+(5,'Sugarland'),
+(5,'Houston');
+
+
+DELETE FROM DEPT_LOCATIONS;		
+DELETE FROM EMPLOYEE
+	WHERE Lname='Brown';
+DELETE FROM DEPENDENT
+	WHERE Bdate IS NULL;
+DELETE FROM WORKS_ON
+	WHERE Pno=3 AND Hours>10;
+DELETE FROM WORKS_ON
+	WHERE Hours<10 OR Essn=123456789;
+
+DELETE FROM EMPLOYEE
+	WHERE Sex IS NULL;
+
+DELETE FROM PROJECT
+	WHERE Dnum=1;
+
+UPDATE DEPENDENT
+SET		Relationship='Mother'
+WHERE	Dependent_name='Alice';
+UPDATE EMPLOYEE
+SET		Salary=35000, Super_ssn=333445555
+WHERE	Fname in ('Franklin','Joyce','Ahmad');
+
+UPDATE DEPARTMENT
+SET		Dnumber=7
+WHERE	Dname='Research';
